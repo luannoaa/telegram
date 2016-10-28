@@ -15,7 +15,7 @@
        
         
        
-         
+        ini_set('max_execution_time', 300);
         function corrigeUTC($timestamp, $offset){
              $offsetClean = (int)preg_replace('/[^0-9]/','',$offset);
              if(preg_match('/^-.*/', $offset) == 1){
@@ -25,7 +25,11 @@
             }
         }
               
-        
+        function sendMessage($id,$texto){
+                $url1 = 'https://api.telegram.org/bot243968836:AAEVbfB8V6hgSqFa5uraQPDxJ5xXEuyBwjU/sendMessage?';
+                 file_get_contents ( $url1."chat_id=".$id."&text=".$texto);
+                  
+        }
         
         $URL = 'https://api.telegram.org/bot243968836:AAEVbfB8V6hgSqFa5uraQPDxJ5xXEuyBwjU/getUpdates';
          $requisicao = file_get_contents($URL);
@@ -42,6 +46,7 @@
          $j = 0;
          /* $idsmegasena = array();
          $w = 0;*/
+      
          for($i = $var ;$i > -1; $i--){
           
             $timestamp = $resultado ['result'][$i]['message']['date'];
@@ -67,24 +72,22 @@
                 print ("<br>");
 
                 if ($texto1 ==1){
-             
-                        for ($i = 1; $i <= 6; $i++) { 
-                                $n[$i-1] = str_pad(rand(1, 60), 2, '0', STR_PAD_LEFT); 
-                               
+                             print ("FUTEBOL");
+                        for ($w = 1; $w <= 6; $w++) { 
+                                $n[$w-1] = str_pad(rand(1, 60), 2, '0', STR_PAD_LEFT);    
                         }
-
-                            sort($n);
-                            $resultadomegasena  = implode(' - ', $n);
-                            $teste = sendMessage($id[$i].$resultadomegasena);
-
+                        sort($n);
+                        $resultadomegasena  = implode(' - ', $n);
+                        $teste = sendMessage($id , $resultadomegasena);
+                        echo $resultadomegasena;    
                     /*$idsmegasena[$w] = $id;
                     $w = $w + 1;
                     $id = array_unique($idsmegasena) */
                 }
      
-     $id = array_unique($ids);
-     $id = array_values($id);
-     $var1 = count($id)-1;
+     //$id = array_unique($ids);
+    // $id = array_values($id);
+     //$var1 = count($id)-1;
          }
            /* for($i = $var1; $i> -1; $i--){
                 $bottoken = "https://api.telegram.org/bot243968836:AAEVbfB8V6hgSqFa5uraQPDxJ5xXEuyBwjU/sendMessage?chat_id=".$id[$i]."&text=Ola meu caro";
