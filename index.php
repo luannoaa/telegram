@@ -4,17 +4,19 @@
     <head>
         <meta charset="UTF-8">
         <title>1-Aula de php</title>
-     
-    </head>
-    <body>
+
+        </head>
+        <body>
         <?php
-       // date_default_timezone_set('Australia/Darwin');
-        
+        // date_default_timezone_set('Australia/Darwin');
+
         
         $offsetUTC = date('Z');
-       
-        
-       
+        $file = 'updaeId.txt';
+        $str = file_get_contents($file);
+        $arrUpdateId =  explode( ',', $str );
+
+
         ini_set('max_execution_time', 300);
         function corrigeUTC($timestamp, $offset){
              $offsetClean = (int)preg_replace('/[^0-9]/','',$offset);
@@ -24,13 +26,13 @@
                 return $timestamp + $offsetClean;
             }
         }
-              
+
         function sendMessage($id,$texto){
                 $url1 = 'https://api.telegram.org/bot243968836:AAEVbfB8V6hgSqFa5uraQPDxJ5xXEuyBwjU/sendMessage?';
                  file_get_contents ( $url1."chat_id=".$id."&text=".$texto);
-                  
+
         }
-        
+
         $URL = 'https://api.telegram.org/bot243968836:AAEVbfB8V6hgSqFa5uraQPDxJ5xXEuyBwjU/getUpdates';
          $requisicao = file_get_contents($URL);
          echo "<br>";
@@ -40,20 +42,20 @@
          echo "<br>";
          $var = count($resultado['result'])-1;
          echo "<br>";
-        
-         
+
+
          $ids = array();
          $j = 0;
          /* $idsmegasena = array();
          $w = 0;*/
-      
+
          for($i = $var ;$i > -1; $i--){
-          
+
             $timestamp = $resultado ['result'][$i]['message']['date'];
             echo "<br>";
 
             $tms = corrigeUTC($timestamp ,$offsetUTC);
-           
+
             print gmdate('d/m/Y (H:i:s)', $tms);
 
             echo "<br>";
@@ -63,14 +65,14 @@
             echo $texto;   
             echo "<br>";
             $id = $resultado ['result'] [$i] ['message']['chat']['id'];
-            
-          
-            echo "<br>";
+            $updateId = $resultado ['result'][$i]['update_id'];
+
+
+           echo "<br>";
            $ids[$j] = $id;
            $j = $j + 1;
             $texto1 = preg_match('/^.*\/megasena$/', $texto);
-                print ("<br>");
-
+            if (!in_array($updateId, $arrUpdateId)){
                 if ($texto1 ==1){
                              print ("FUTEBOL");
                         for ($w = 1; $w <= 6; $w++) { 
@@ -79,23 +81,26 @@
                         sort($n);
                         $resultadomegasena  = implode(' - ', $n);
                         $teste = sendMessage($id , $resultadomegasena);
-                        echo $resultadomegasena;    
+
+                        echo $resultadomegasena;
+                        file_put_contents($file, $updateId.',', FILE_APPEND);
                     /*$idsmegasena[$w] = $id;
                     $w = $w + 1;
                     $id = array_unique($idsmegasena) */
                 }
-     
-     //$id = array_unique($ids);
-    // $id = array_values($id);
-     //$var1 = count($id)-1;
+            }
+        //$id = array_unique($ids);
+        // $id = array_values($id);
+        //$var1 = count($id)-1;
          }
+
            /* for($i = $var1; $i> -1; $i--){
                 $bottoken = "https://api.telegram.org/bot243968836:AAEVbfB8V6hgSqFa5uraQPDxJ5xXEuyBwjU/sendMessage?chat_id=".$id[$i]."&text=Ola meu caro";
                 $requisicao1 = file_get_contents($bottoken);
-       
+
         print_r ($id[$i]);
             }
-*/
+        */
         ?>
         <form method ="GET">
             <input type="text" name="$URL"/>
