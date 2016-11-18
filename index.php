@@ -1,110 +1,59 @@
-<!DOCTYPE html>
+<?php require'cabecalho.php'; ?>
+<?php
 
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>1-Aula de php</title>
+require './Conexao.php';
+require './Utilidades.php';
 
-        </head>
-        <body>
-        <?php require 'conexao.php';?>
-        <?php
-        // date_default_timezone_set('Australia/Darwin');
+$file = 'updateId.txt';
+$str = file_get_contents($file);
+$arrUpdateId = explode(',', $str);
 
-        
-        $offsetUTC = date('Z');
-        $file = 'updaeId.txt';
-        $str = file_get_contents($file);
-        $arrUpdateId =  explode( ',', $str );
+$resultado = Utilidades::getUpdate();
 
+$var = count($resultado['result']) - 1;
 
-        ini_set('max_execution_time', 300);
-        function corrigeUTC($timestamp, $offset){
-             $offsetClean = (int)preg_replace('/[^0-9]/','',$offset);
-             if(preg_match('/^-.*/', $offset) == 1){
-                return $timestamp - $offsetClean;
-            } else {
-                return $timestamp + $offsetClean;
+for ($i = $var; $i > -1; $i--) {
+    $data = $resultado ['result'][$i]['message']['date'];
+    $nome = $resultado['result'][$i] ['message']['from']['first_name'];
+    $texto = $resultado['result'][$i]['message']['text'];
+    $id = $resultado ['result'] [$i] ['message']['chat']['id'];
+    $updateId = $resultado ['result'][$i]['update_id'];
+
+    $dataRetorno = Utilidades::tratarData($data);
+    setlocale(LC_ALL, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+    $dataTratada = strftime('%A, %d de %B de %Y', $dataRetorno);
+    $horaTratada = strftime('%R', $dataRetorno);
+
+    echo "<tr>"
+    . "<td colspan='2' style='background-color: #dddddd;'>" . $dataTratada . "</td>"
+    . "</tr>"
+    . "<tr>"
+    . "<td style='background-color: #dddddd;'>" . $nome . "</td>"
+    . "<td style='background-color: #dddddd;'>" . $horaTratada . "</td>"
+    . "</tr>"
+    . "<tr>"
+    . "<td colspan='2'>" . $texto . "</td>"
+    . "</tr>";
+
+    $texto1 = preg_match('/^.*\/megasena$/', $texto);
+    if (!in_array($updateId, $arrUpdateId)) {
+        if ($texto1 == 1) {
+            print ("RESULTADO : ");
+            for ($w = 1; $w <= 6; $w++) {
+                $n[$w - 1] = str_pad(rand(1, 60), 2, '0', STR_PAD_LEFT);
             }
+            sort($n);
+            $resultadomegasena = implode(' - ', $n);
+            Utilidades::sendMessage($id, $resultadomegasena);
+            $stmt = Conexao::pegaConexao()->prepare("INSERT INTO cadastro(id, nome, texto) VALUES(?, ?, ?)");
+            $stmt->bindParam(1, $id);
+            $stmt->bindParam(2, $nome);
+            $stmt->bindParam(3, $resultadomegasena);
+            $stmt->execute();
+            echo $resultadomegasena;
+            file_put_contents($file, $updateId . ',', FILE_APPEND);
         }
-
-        function sendMessage($id,$texto){
-                $url1 = 'https://api.telegram.org/bot243968836:AAEVbfB8V6hgSqFa5uraQPDxJ5xXEuyBwjU/sendMessage?';
-                 file_get_contents ( $url1."chat_id=".$id."&text=".$texto);
-
-        }
-
-        $URL = 'https://api.telegram.org/bot243968836:AAEVbfB8V6hgSqFa5uraQPDxJ5xXEuyBwjU/getUpdates';
-         $requisicao = file_get_contents($URL);
-         echo "<br>";
-         $resultado = json_decode($requisicao,true);
-         echo "<br>";
-         //print_r (json_encode($resultado, JSON_PRETTY_PRINT));
-         echo "<br>";
-         $var = count($resultado['result'])-1;
-         echo "<br>";
-
-
-         $ids = array();
-         $j = 0;
-         /* $idsmegasena = array();
-         $w = 0;*/
-
-         for($i = $var ;$i > -1; $i--){
-
-            $timestamp = $resultado ['result'][$i]['message']['date'];
-            echo "<br>";
-
-            $tms = corrigeUTC($timestamp ,$offsetUTC);
-
-            print gmdate('d/m/Y (H:i:s)', $tms);
-
-            echo "<br>";
-            $nome = $resultado['result'][$i] ['message']['from']['first_name'];
-            echo $nome." : ";
-            $texto = $resultado['result'][$i]['message']['text'];
-            echo $texto;   
-            echo "<br>";
-            $id = $resultado ['result'] [$i] ['message']['chat']['id'];
-            $updateId = $resultado ['result'][$i]['update_id'];
-
-
-           echo "<br>";
-           $ids[$j] = $id;
-           $j = $j + 1;
-            $texto1 = preg_match('/^.*\/megasena$/', $texto);
-            if (!in_array($updateId, $arrUpdateId)){
-                if ($texto1 ==1){
-                             print ("FUTEBOL");
-                        for ($w = 1; $w <= 6; $w++) { 
-                                $n[$w-1] = str_pad(rand(1, 60), 2, '0', STR_PAD_LEFT);    
-                        }
-                        sort($n);
-                        $resultadomegasena  = implode(' - ', $n);
-                        $teste = sendMessage($id , $resultadomegasena);
-
-                        echo $resultadomegasena;
-                        file_put_contents($file, $updateId.',', FILE_APPEND);
-                    /*$idsmegasena[$w] = $id;
-                    $w = $w + 1;
-                    $id = array_unique($idsmegasena) */
-                }
-            }
-        //$id = array_unique($ids);
-        // $id = array_values($id);
-        //$var1 = count($id)-1;
-         }
-
-           /* for($i = $var1; $i> -1; $i--){
-                $bottoken = "https://api.telegram.org/bot243968836:AAEVbfB8V6hgSqFa5uraQPDxJ5xXEuyBwjU/sendMessage?chat_id=".$id[$i]."&text=Ola meu caro";
-                $requisicao1 = file_get_contents($bottoken);
-
-        print_r ($id[$i]);
-            }
-        */
-        ?>
-        <form method ="GET">
-            <input type="text" name="$URL"/>
-            <input type="submit" value="OK"/>
-    </body>
-</html>
+    }
+}
+?>
+        <?php require'rodape.php'; ?>
