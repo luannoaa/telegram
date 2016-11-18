@@ -7,6 +7,7 @@
 
         </head>
         <body>
+        <?php require 'conexao.php';?>
         <?php
         // date_default_timezone_set('Australia/Darwin');
 
