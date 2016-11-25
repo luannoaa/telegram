@@ -45,11 +45,12 @@ for ($i = $var; $i > -1; $i--) {
             sort($n);
             $resultadomegasena = implode(' - ', $n);
             Utilidades::sendMessage($id, $resultadomegasena);
-            $stmt = Conexao::pegaConexao()->prepare("insert into tbbotresposta(first_name, nm_comando,resposta,update_id) values(?, ?, ?, ?)");
+            $stmt = Conexao::pegaConexao()->prepare("insert into tbbotresposta(first_name, nm_comando,resposta,update_id,dataA) values(?, ?, ?, ?, ?)");
             $stmt->bindParam(1, $nome);
             $stmt->bindParam(2, $texto);
             $stmt->bindParam(3, $resultadomegasena);
             $stmt->bindParam(4, $updateId);
+            $stmt->bindParam(5, $dataTratada);
             $stmt->execute();
             echo $resultadomegasena;
             file_put_contents($file, $updateId . ',', FILE_APPEND);
