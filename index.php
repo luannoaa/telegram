@@ -45,10 +45,11 @@ for ($i = $var; $i > -1; $i--) {
             sort($n);
             $resultadomegasena = implode(' - ', $n);
             Utilidades::sendMessage($id, $resultadomegasena);
-            $stmt = Conexao::pegaConexao()->prepare("INSERT INTO cadastro(id, nome, texto) VALUES(?, ?, ?)");
-            $stmt->bindParam(1, $id);
-            $stmt->bindParam(2, $nome);
+            $stmt = Conexao::pegaConexao()->prepare("insert into tbbotresposta(first_name, nm_comando,resposta,update_id) values(?, ?, ?, ?)");
+            $stmt->bindParam(1, $nome);
+            $stmt->bindParam(2, $texto);
             $stmt->bindParam(3, $resultadomegasena);
+            $stmt->bindParam(4, $updateId);
             $stmt->execute();
             echo $resultadomegasena;
             file_put_contents($file, $updateId . ',', FILE_APPEND);
@@ -56,4 +57,4 @@ for ($i = $var; $i > -1; $i--) {
     }
 }
 ?>
-        <?php require'rodape.php'; ?>
+<?php require'rodape.php'; ?>

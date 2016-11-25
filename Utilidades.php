@@ -5,20 +5,19 @@
  * @matricula 201613199
  */
 define('TOKEN', file_get_contents('./token.txt'));
+define("URL", 'https://api.telegram.org/' .TOKEN);
 
 class Utilidades {
 
-    private static $url = 'https://api.telegram.org/bot' . TOKEN;
-
     public static function getUpdate() {
-        $urlGetUpdate = self::$url . '/getUpdates';
+        $urlGetUpdate = URL . '/getUpdates';
         $requisicao = file_get_contents($urlGetUpdate);
         $resultado = json_decode($requisicao, true);
         return $resultado;
     }
 
     public static function sendMessage($id, $texto) {
-        $urlSendMessage = self::$url . '/sendMessage?';
+        $urlSendMessage = URL . '/sendMessage?';
         $textoEnviar = urlencode($texto);
         file_get_contents($urlSendMessage . "chat_id=" . $id . "&text=" . $textoEnviar);
     }
@@ -40,5 +39,4 @@ class Utilidades {
             return $data + $offsetClean;
         }
     }
-
 }
