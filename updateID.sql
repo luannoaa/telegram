@@ -16,30 +16,12 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `tbbotresposta`
---
-
-DROP TABLE IF EXISTS `tbbotresposta`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `tbbotresposta` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `first_name` varchar(255) NOT NULL,
-  `nm_comando` varchar(255) DEFAULT NULL,
-  `resposta` varchar(255) DEFAULT NULL,
-  `update_id` varchar(255) NOT NULL,
-  PRIMARY KEY (`update_id`),
-  UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Dumping data for table `tbbotresposta`
 --
 
 LOCK TABLES `tbbotresposta` WRITE;
 /*!40000 ALTER TABLE `tbbotresposta` DISABLE KEYS */;
-INSERT INTO `tbbotresposta` VALUES (2,'Luan','/megasena','10 - 12 - 20 - 26 - 44 - 48','481287515'),(1,'Luan','/megasena','04 - 05 - 23 - 30 - 32 - 59','481287516');
+INSERT INTO `tbbotresposta` VALUES (13,'Luan','/megasena','11 - 17 - 31 - 51 - 55 - 58','481287510'),(12,'Luan','/megasena','11 - 26 - 39 - 45 - 47 - 59','481287513'),(11,'Luan','/megasena','04 - 15 - 24 - 33 - 41 - 44','481287515'),(10,'Luan','/megasena','02 - 04 - 15 - 32 - 45 - 48','481287516'),(9,'Luan','/megasena','29 - 42 - 43 - 47 - 50 - 51','481287517'),(8,'Luan','/megasena','23 - 24 - 30 - 35 - 45 - 48','481287518'),(7,'Luan','/megasena','16 - 35 - 36 - 37 - 49 - 50','481287519'),(6,'Luan','/megasena','13 - 17 - 36 - 37 - 42 - 43','481287520'),(5,'Luan','/megasena','18 - 20 - 34 - 41 - 48 - 60','481287521'),(4,'Ana','/megasena','04 - 10 - 20 - 49 - 50 - 53','481287523'),(3,'A','/megasena','01 - 12 - 23 - 27 - 29 - 40','481287528'),(2,'Luan','/megasena','02 - 16 - 27 - 31 - 32 - 52','481287529'),(1,'Luan','/megasena','08 - 24 - 36 - 38 - 39 - 45','481287531');
 /*!40000 ALTER TABLE `tbbotresposta` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +34,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-25 20:45:30
+-- Dump completed on 2016-11-26  1:46:11
