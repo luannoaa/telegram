@@ -37,11 +37,11 @@ class Utilidades {
         if (preg_match('/^-.*/', $offsetUTC) == 1) {
 //            $dataTratada = $data - $offsetClean;
 //            return strftime($formato, $dataTratada);
-            return $data - $offsetClean;
+            return $data;
         } else {
 //            $dataTratada = $data + $offsetClean;
 //            return strftime($formato, $dataTratada);
-            return $data + $offsetClean;
+            return $data;
         }
     }
 }

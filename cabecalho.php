@@ -2,7 +2,7 @@
 
 <html>
     <head>
-        <meta charset="UTF-8">
+        <meta charset="utf-8">
         <title>1-Aula de php</title>
 <style>
 table {

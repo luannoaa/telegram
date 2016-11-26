@@ -20,11 +20,12 @@ for ($i = $var; $i > -1; $i--) {
     $updateId = $resultado ['result'][$i]['update_id'];
 
     $dataRetorno = Utilidades::tratarData($data);
-    setlocale(LC_ALL, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
-    $dataTratada = strftime('%A, %d de %B de %Y', $dataRetorno);
+    setlocale(LC_ALL, "pt_BR", "pt_BR.iso-8859-1", "pt_BR.utf-8", "portuguese");
+    date_default_timezone_set('America/Sao_Paulo');
+    $dataTratada = utf8_encode (strftime('%A, %d de %B de %Y', $dataRetorno));
     $horaTratada = strftime('%R', $dataRetorno);
 
-    echo "<tr>"
+    echo "<tr>" 
     . "<td colspan='2' style='background-color: #dddddd;'>" . $dataTratada . "</td>"
     . "</tr>"
     . "<tr>"
@@ -45,12 +46,12 @@ for ($i = $var; $i > -1; $i--) {
             sort($n);
             $resultadomegasena = implode(' - ', $n);
             Utilidades::sendMessage($id, $resultadomegasena);
-            $stmt = Conexao::pegaConexao()->prepare("insert into tbbotresposta(first_name, nm_comando,resposta,update_id,dataA) values(?, ?, ?, ?, ?)");
+            $stmt = Conexao::pegaConexao()->prepare("insert into tbbotresposta(first_name, nm_comando,resposta,update_id) values(?, ?, ?, ?)");
             $stmt->bindParam(1, $nome);
             $stmt->bindParam(2, $texto);
             $stmt->bindParam(3, $resultadomegasena);
             $stmt->bindParam(4, $updateId);
-            $stmt->bindParam(5, $dataTratada);
+    
             $stmt->execute();
             echo $resultadomegasena;
             file_put_contents($file, $updateId . ',', FILE_APPEND);
