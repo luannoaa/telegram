@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Nome: Luan Henrique
+                Matricula:201613199-->
+        <title>Mensagens</title>
+        <meta charset="utf-8">
+        <style type="text/css">
+		body {
+		text-align: center;
+		width: 700px;
+		height: auto;
+		border: 4px solid;
+		padding: 50px 30px;
+		background-image: url(d422Ff6.jpeg);
+		background-attachment: fixed;
+		background-repeat: no-repeat;
+		margin-left: auto;
+        margin-right: auto;
+		display: block;
+		}
+		h4{ color:#000000;
+			font-style: normal;
+			font-weight: 900;
+			font-variant: normal;
+			font-size: 25px;}
+			li{
+			color:#000000;
+			font-style: normal;
+			font-weight: 900;
+			font-variant: normal;
+			font-size: 20px;;}
+
+        </style>
+        <script>
+            /*https://api.telegram.org/bot243968836:AAEVbfB8V6hgSqFa5uraQPDxJ5xXEuyBwjU/getUpdates*/
+
+
+            function conversordedata(datareturn) {
+                var date = new Date(datareturn * 1000);
+
+                var day;
+                if (date.getDate() < 10) {
+                    day = "0" + date.getDate();
+                } else {
+                    day = date.getDate();
+                }
+                var month;
+                if ((date.getMonth() + 1) < 10) {
+                    month = "0" + (date.getMonth() + 1);
+                } else {
+                    month = (date.getMonth() + 1);
+                }
+                var year = date.getFullYear();
+                var minutes;
+                if (date.getMinutes() < 10) {
+                    minutes = "0" + date.getMinutes();
+                } else {
+                    minutes = date.getMinutes();
+                }
+                var hours = date.getHours();
+
+                if (date.getHours() < 10) {
+                    hours = "0" + date.getHours();
+                } else {
+                    hours = date.getHours();
+                }
+
+                return  day + '/' + month + '/' + year + ' - ' + hours + ':' + minutes;
+
+            }
+
+            var titulo = document.title;
+
+            function sendText() {
+                var dota2 = document.getElementById('link').value;
+                var getpost = new XMLHttpRequest();
+                var div = document.getElementById("returnDiv");
+                getpost.open('GET', dota2, true);
+                getpost.onload = function(e) {
+                    if (this.status == 200) {
+                        var body = this.responseText;
+                        var jsonData = JSON.parse(body);
+                        var result = jsonData.result;
+
+                        if (result.length > -1) {
+                            document.title = "(" + result.length + ") " + titulo;
+                            var msg = "";
+							var msgs = result.length;
+                            for (var i = (msgs - 1); i >= 0; i--) {
+                                var text = result[i].message.text;
+                                var fname = result[i].message.from.first_name;
+                                var date = result[i].message.date;
+
+                                msg = msg + "<li>" + conversordedata(date) + " -<b><i><u> " + fname + "</u></i> : " + text + "</b></li>";
+                                div.innerHTML = msg;
+                            }
+
+                        }
+                    }
+                }
+
+                getpost.send();
+            }
+        </script>
+    </head>
+    <body>
+        <header>
+
+            <h4>Retorno das mensagens do telegram</h4>
+            <input type="text" id="link" name="dota2" size="60" placeholder="Informar URL do Telegram..."
+                   value="https://api.telegram.org/bot243968836:AAEVbfB8V6hgSqFa5uraQPDxJ5xXEuyBwjU/getUpdates" >
+            <button id="submit" onclick="sendText()">Send</button>   
+        </header>
+    <main>
+        <div id="returnDiv"></div>
+    </main>
+    <footer>
+
+    </footer>
+    <script type="text/javascript">
+        setInterval(sendText, 60000);
+    </script>
+</body>
+</html>
