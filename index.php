@@ -75,7 +75,6 @@ for ($i = $var; $i > -1; $i--) {
         $fileID = $resultado['result'][$i]['message']['photo'][1]['file_id'];
         
     }
-
     $texto1 = preg_match('/^.*\/megasena$/', $texto);
 }
 ?>
